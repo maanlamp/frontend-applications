@@ -1,5 +1,22 @@
 # Jeugdzorgrisicotaxatie-app
 
+## Setup
+Om deze gekke repo tot leven te wekken moet je 'm eerst downloaden.
+
+Daarna typ je lekker in je command line
+```shell
+npm i
+```
+om alle dependencies te downloaden.
+
+Vervolgens typ je
+```shell
+npm run build
+```
+en alles wordt voor je gedaan.
+
+Helaas werkt het `move:images` script niet, geen idee waarom, dus moet je die helaas nog zelf uit `src` naar `dist` kopiëren.
+
 ## Devlog
 
 ### Dag 1 (8 oktober)

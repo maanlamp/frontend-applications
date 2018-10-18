@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "move:images": "cp -r ./src/images ./dist/images",
     "build:js": "./node_modules/.bin/browserify -t [ babelify --presets [ @babel/preset-env ] ] src/index.js -o dist/bundle.js",
     "build:css": "./node_modules/.bin/postcss src/style --dir dist/style",
     "bundle": "npm run build:js && npm run build:css"
