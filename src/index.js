@@ -10,8 +10,6 @@ const SearchBar = require("./components/SearchBar");
 
 const app = choo(); //Choo choo boiis, the pain train is leaving!
 
-app.use(require("choo-persist")());
-
 app.use((state, emitter) => {
 	state.result = 0;
 	state.data = require("./data");
@@ -187,4 +185,12 @@ function getBestFrom (input) {
 		)
 		.sort((a, b) => Math.abs(Number(a.weight)) > Math.abs(Number(b.weight)) ? 1 : -1)
 		.slice(0, 3);
+}
+
+function save (data) {
+	localStorage.setItem("data", JSON.stringify(data));
+}
+
+function load () {
+	return JSON.parse(localStorage.getItem("data")) || {};
 }
