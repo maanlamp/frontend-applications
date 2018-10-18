@@ -17,6 +17,9 @@ en alles wordt voor je gedaan.
 
 Helaas werkt het `move:images` script niet, geen idee waarom, dus moet je die helaas nog zelf uit `src` naar `dist` kopiëren.
 
+## Demo
+[Bekijk de app hier al werkend, zonder moeite!](https://blissful-keller-e69e88.netlify.com/)
+
 ## Devlog
 
 ### Dag 1 (8 oktober)
