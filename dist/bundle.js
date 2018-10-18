@@ -3770,615 +3770,1191 @@ function extend(target) {
 }
 
 },{}],43:[function(require,module,exports){
-const ChooComponent = require("choo/component");
-const html = require("choo/html");
+"use strict";
 
-module.exports = class Form extends ChooComponent {
-	constructor (categories) {
-		super();
-		this.categories = categories;
-	}
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-	createElement (state, emit) {
-		return html`
-			<form>
-				${this.categories.map(category => category.render(state, emit))}
-			</form>
-		`;
-	}
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["\n\t\t\t<form>\n\t\t\t\t", "\n\t\t\t</form>\n\t\t"]);
 
-	update (state, emit) {
-		return false;
-	}
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
 }
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var ChooComponent = require("choo/component");
+
+var html = require("choo/html");
+
+module.exports =
+/*#__PURE__*/
+function (_ChooComponent) {
+  _inherits(Form, _ChooComponent);
+
+  function Form(categories) {
+    var _this;
+
+    _classCallCheck(this, Form);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Form).call(this));
+    _this.categories = categories;
+    return _this;
+  }
+
+  _createClass(Form, [{
+    key: "createElement",
+    value: function createElement(state, emit) {
+      return html(_templateObject(), this.categories.map(function (category) {
+        return category.render(state, emit);
+      }));
+    }
+  }, {
+    key: "update",
+    value: function update(state, emit) {
+      return false;
+    }
+  }]);
+
+  return Form;
+}(ChooComponent);
+
 },{"choo/component":8,"choo/html":9}],44:[function(require,module,exports){
-const ChooComponent = require("choo/component");
-const html = require("choo/html");
+"use strict";
 
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-module.exports = class FormCategory extends ChooComponent {
-	constructor (name, selects) {
-		super();
-		this.name = name;
-		this.selects = selects;
-		this.filledSelects = 0;
-	}
+function _templateObject2() {
+  var data = _taggedTemplateLiteral(["<li>", "</li>"]);
 
-	createElement (state, emit) {
-		return html`
-			<ul class="closed formCategory">
-				<h2 onclick=${() => this.element.classList.toggle("closed")}>${this.name}</h2>
-				${this.selects.map(select => html`<li>${select.render(state, emit)}</li>`)}
-				<p class="filledCounter">${this.filledSelects}/${this.selects.length}</p>
-				<img src="images/arrow.png"/>
-			</ul>
-		`;
-	}
+  _templateObject2 = function _templateObject2() {
+    return data;
+  };
 
-	update (state, emit) {
-		return false;
-	}
+  return data;
 }
+
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["\n\t\t\t<ul class=\"closed formCategory\">\n\t\t\t\t<h2 onclick=", ">", "</h2>\n\t\t\t\t", "\n\t\t\t\t<p class=\"filledCounter\">", "/", "</p>\n\t\t\t\t<img src=\"images/arrow.png\"/>\n\t\t\t</ul>\n\t\t"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var ChooComponent = require("choo/component");
+
+var html = require("choo/html");
+
+module.exports =
+/*#__PURE__*/
+function (_ChooComponent) {
+  _inherits(FormCategory, _ChooComponent);
+
+  function FormCategory(name, selects) {
+    var _this;
+
+    _classCallCheck(this, FormCategory);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(FormCategory).call(this));
+    _this.name = name;
+    _this.selects = selects;
+    _this.filledSelects = 0;
+    return _this;
+  }
+
+  _createClass(FormCategory, [{
+    key: "createElement",
+    value: function createElement(state, emit) {
+      var _this2 = this;
+
+      return html(_templateObject(), function () {
+        return _this2.element.classList.toggle("closed");
+      }, this.name, this.selects.map(function (select) {
+        return html(_templateObject2(), select.render(state, emit));
+      }), this.filledSelects, this.selects.length);
+    }
+  }, {
+    key: "update",
+    value: function update(state, emit) {
+      return false;
+    }
+  }]);
+
+  return FormCategory;
+}(ChooComponent);
+
 },{"choo/component":8,"choo/html":9}],45:[function(require,module,exports){
-const ChooComponent = require("choo/component");
-const html = require("choo/html");
+"use strict";
 
-module.exports = class OpletPuntjes extends ChooComponent {
-	constructor () {
-		super();
-		this.items = [];
-	}
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-	set (array) {
-		this.items = array;
-	}
+function _templateObject2() {
+  var data = _taggedTemplateLiteral(["<li>", ": ", "</li>"]);
 
-	createElement (state, emit) {
-		return html`
-			<div id="opletPuntjes" class="card">
-				<h2>Let op!</h2>
-				<h3>U hebt bij de volgende punten aangegeven niet zeker te zijn van uw antwoord. Overleg met een collega en/of probeer een objectief antwoord te krijgen.</h3>
-				<ul>
-					${this.items.map(item => html`<li>${item.label}: ${item.value}</li>`)}
-				</ul>
-			</div>
-		`;
-	}
+  _templateObject2 = function _templateObject2() {
+    return data;
+  };
 
-	update (state, emit) {
-		return true;
-	}
+  return data;
 }
+
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["\n\t\t\t<div id=\"opletPuntjes\" class=\"card\">\n\t\t\t\t<h2>Let op!</h2>\n\t\t\t\t<h3>U hebt bij de volgende punten aangegeven niet zeker te zijn van uw antwoord. Overleg met een collega en/of probeer een objectief antwoord te krijgen.</h3>\n\t\t\t\t<ul>\n\t\t\t\t\t", "\n\t\t\t\t</ul>\n\t\t\t</div>\n\t\t"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var ChooComponent = require("choo/component");
+
+var html = require("choo/html");
+
+module.exports =
+/*#__PURE__*/
+function (_ChooComponent) {
+  _inherits(OpletPuntjes, _ChooComponent);
+
+  function OpletPuntjes() {
+    var _this;
+
+    _classCallCheck(this, OpletPuntjes);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(OpletPuntjes).call(this));
+    _this.items = [];
+    return _this;
+  }
+
+  _createClass(OpletPuntjes, [{
+    key: "set",
+    value: function set(array) {
+      this.items = array;
+    }
+  }, {
+    key: "createElement",
+    value: function createElement(state, emit) {
+      return html(_templateObject(), this.items.map(function (item) {
+        return html(_templateObject2(), item.label, item.value);
+      }));
+    }
+  }, {
+    key: "update",
+    value: function update(state, emit) {
+      return true;
+    }
+  }]);
+
+  return OpletPuntjes;
+}(ChooComponent);
+
 },{"choo/component":8,"choo/html":9}],46:[function(require,module,exports){
-const ChooComponent = require("choo/component");
-const html = require("choo/html");
+"use strict";
 
-module.exports = class RisicoFactor extends ChooComponent {
-	constructor (result) {
-		super();
-		this._CACHEDRESULT = result;
-	}
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-	updateFactor (self) {
-		const minAngle = Math.PI * .7;
-		const maxAngle = Math.PI * 2.3;
-		const percentage = this._CACHEDRESULT / 100;
-		const currentAngle = minAngle + percentage * maxAngle;
-		if (!self.context) this.context = self.element.getContext("2d");
-		if (!self.width) this.width = self.context.canvas.width;
-		if (!self.height) this.height =  self.context.canvas.height;
-		self.context.lineWidth = 6;
-		self.context.imageSmoothingQuality = "low";
-		self.context.lineCap = "round";
-		self.context.clearRect(0, 0, this.width, this.height);
-		self.context.strokeStyle = "#D1D8EF";
-		self.context.beginPath();
-		self.context.arc(this.width / 2, this.height / 2, this.width / 2 - 10, minAngle, maxAngle);
-		self.context.stroke();
-		self.context.strokeStyle = `rgb(${70 + 185 * percentage}, ${161 - 161 * percentage}, ${251 - 251 * percentage})`;
-		self.context.beginPath();
-		self.context.arc(this.width / 2, this.height / 2, this.width / 2 - 10, minAngle, Math.min(currentAngle, maxAngle));
-		self.context.stroke();
-		self.context.fillStyle = "black";
-		self.context.font = "2rem 'Work Sans'";
-		const xOffset = self.context.measureText(this._CACHEDRESULT).width / 2;
-		self.context.textAlign = "center";
-		self.context.fillText(this._CACHEDRESULT, this.width / 2 - xOffset / 2, this.height / 2 + 12);
-		self.context.fillStyle = "rgba(0, 0, 0, .33)";
-		self.context.font = "1rem 'Work Sans'";
-		self.context.fillText("%", this.width / 2 + xOffset / 2 + 6, this.height / 2 + 12);
-	}
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["<canvas id=\"risicoFactor\" width=120 height=120></canvas>"]);
 
-	createElement (state, emit) {
-		setTimeout(() => this.updateFactor(this), 1);
-		return html`<canvas id="risicoFactor" width=120 height=120></canvas>`;
-	}
+  _templateObject = function _templateObject() {
+    return data;
+  };
 
-	update (state, emit) {
-		if (this._CACHEDRESULT === state.result) return;
-		this._CACHEDRESULT = state.result;
-		this.updateFactor(this);
-	}
+  return data;
 }
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var ChooComponent = require("choo/component");
+
+var html = require("choo/html");
+
+module.exports =
+/*#__PURE__*/
+function (_ChooComponent) {
+  _inherits(RisicoFactor, _ChooComponent);
+
+  function RisicoFactor(result) {
+    var _this;
+
+    _classCallCheck(this, RisicoFactor);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(RisicoFactor).call(this));
+    _this._CACHEDRESULT = result;
+    return _this;
+  }
+
+  _createClass(RisicoFactor, [{
+    key: "updateFactor",
+    value: function updateFactor(self) {
+      var minAngle = Math.PI * .7;
+      var maxAngle = Math.PI * 2.3;
+      var percentage = this._CACHEDRESULT / 100;
+      var currentAngle = minAngle + percentage * maxAngle;
+      if (!self.context) this.context = self.element.getContext("2d");
+      if (!self.width) this.width = self.context.canvas.width;
+      if (!self.height) this.height = self.context.canvas.height;
+      self.context.lineWidth = 6;
+      self.context.imageSmoothingQuality = "low";
+      self.context.lineCap = "round";
+      self.context.clearRect(0, 0, this.width, this.height);
+      self.context.strokeStyle = "#D1D8EF";
+      self.context.beginPath();
+      self.context.arc(this.width / 2, this.height / 2, this.width / 2 - 10, minAngle, maxAngle);
+      self.context.stroke();
+      self.context.strokeStyle = "rgb(".concat(70 + 185 * percentage, ", ").concat(161 - 161 * percentage, ", ").concat(251 - 251 * percentage, ")");
+      self.context.beginPath();
+      self.context.arc(this.width / 2, this.height / 2, this.width / 2 - 10, minAngle, Math.min(currentAngle, maxAngle));
+      self.context.stroke();
+      self.context.fillStyle = "black";
+      self.context.font = "2rem 'Work Sans'";
+      var xOffset = self.context.measureText(this._CACHEDRESULT).width / 2;
+      self.context.textAlign = "center";
+      self.context.fillText(this._CACHEDRESULT, this.width / 2 - xOffset / 2, this.height / 2 + 12);
+      self.context.fillStyle = "rgba(0, 0, 0, .33)";
+      self.context.font = "1rem 'Work Sans'";
+      self.context.fillText("%", this.width / 2 + xOffset / 2 + 6, this.height / 2 + 12);
+    }
+  }, {
+    key: "createElement",
+    value: function createElement(state, emit) {
+      var _this2 = this;
+
+      setTimeout(function () {
+        return _this2.updateFactor(_this2);
+      }, 1);
+      return html(_templateObject());
+    }
+  }, {
+    key: "update",
+    value: function update(state, emit) {
+      if (this._CACHEDRESULT === state.result) return;
+      this._CACHEDRESULT = state.result;
+      this.updateFactor(this);
+    }
+  }]);
+
+  return RisicoFactor;
+}(ChooComponent);
+
 },{"choo/component":8,"choo/html":9}],47:[function(require,module,exports){
-const ChooComponent = require("choo/component");
-const html = require("choo/html");
+"use strict";
 
-module.exports = class SearchBar extends ChooComponent {
-	constructor (categories) {
-		super();
-		this.categories = categories;
-	}
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-	createElement (state, emit) {
-		return html`
-			<input placeholder="Zoek..." id="searchBar" type="text" spellcheck="false" oninput=${event => {
-				clearTimeout(window.searchTimeout);
-				window.searchTimeout = setTimeout(() => {
-					const value = this.element.value.toLowerCase();
-					if (!value || value.length < 3) {
-						document.querySelectorAll(".formCategory").forEach(formCategory => {
-							formCategory.classList.add("closed");
-						});
-						return;
-					}
-					document.querySelectorAll(".formCategory").forEach((formCategory, i) => {
-						if (formCategory.innerText.toLowerCase().includes(value)) {
-							formCategory.classList.remove("closed");
-							if (i === 1) { //Scroll only to first category
-								setTimeout(() => {
-									formCategory.scrollIntoView({
-										behavior: "smooth"
-									});
-								}, 500); //500ms is transition duration.
-							}
-						} else {
-							formCategory.classList.add("closed");
-						}
-					});
-				}, 250);
-			}}/>
-		`;
-	}
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["\n\t\t\t<input placeholder=\"Zoek...\" id=\"searchBar\" type=\"text\" spellcheck=\"false\" oninput=", "/>\n\t\t"]);
 
-	update (state, emit) {
-		return false;
-	}
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
 }
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var ChooComponent = require("choo/component");
+
+var html = require("choo/html");
+
+module.exports =
+/*#__PURE__*/
+function (_ChooComponent) {
+  _inherits(SearchBar, _ChooComponent);
+
+  function SearchBar(categories) {
+    var _this;
+
+    _classCallCheck(this, SearchBar);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(SearchBar).call(this));
+    _this.categories = categories;
+    return _this;
+  }
+
+  _createClass(SearchBar, [{
+    key: "createElement",
+    value: function createElement(state, emit) {
+      var _this2 = this;
+
+      return html(_templateObject(), function (event) {
+        clearTimeout(window.searchTimeout);
+        window.searchTimeout = setTimeout(function () {
+          var value = _this2.element.value.toLowerCase();
+
+          if (!value || value.length < 3) {
+            document.querySelectorAll(".formCategory").forEach(function (formCategory) {
+              formCategory.classList.add("closed");
+            });
+            return;
+          }
+
+          document.querySelectorAll(".formCategory").forEach(function (formCategory, i) {
+            if (formCategory.innerText.toLowerCase().includes(value)) {
+              formCategory.classList.remove("closed");
+
+              if (i === 1) {
+                //Scroll only to first category
+                setTimeout(function () {
+                  formCategory.scrollIntoView({
+                    behavior: "smooth"
+                  });
+                }, 500); //500ms is transition duration.
+              }
+            } else {
+              formCategory.classList.add("closed");
+            }
+          });
+        }, 250);
+      });
+    }
+  }, {
+    key: "update",
+    value: function update(state, emit) {
+      return false;
+    }
+  }]);
+
+  return SearchBar;
+}(ChooComponent);
+
 },{"choo/component":8,"choo/html":9}],48:[function(require,module,exports){
-const ChooComponent = require("choo/component");
-const html = require("choo/html");
-const raw = require("choo/html/raw");
+"use strict";
 
-module.exports = class Select extends ChooComponent {
-	constructor (input, weight) {
-		super();
-		if (typeof input === "string") {
-			this.label = input;
-			this.items = ["Ja", "Denk het wel", "Onbekend", "Denk het niet", "Nee"];
-			this.default = "Onbekend";
-		} else {
-			Object.assign(this, input);
-		}
-		this.weight = weight;
-	}
+function _templateObject4() {
+  var data = _taggedTemplateLiteral(["\n\t\t\t<div class=\"selectWrapper\">\n\t\t\t\t<h3>", "</h3>\n\t\t\t\t<select id=\"", "\">\n\t\t\t\t\t", "\n\t\t\t\t</select>\n\t\t\t</div>\n\t\t"]);
 
-	save () {
-		const value = this.element.querySelector("select").value;
-		const weight = this.weight || this.items.find(item => item.label === value).weight;
-		return {
-			id: this._id,
-			value: value,
-			weight: weight,
-			label: this.label
-		};
-	}
+  _templateObject4 = function _templateObject4() {
+    return data;
+  };
 
-	set (value) {
-		this.element.querySelector("select").value = value;
-	}
-
-	generateSelectIDForSaving (state) {
-		return `select${state.selectIDCount++}`;
-	}
-
-	renderOption (item) {
-		if (typeof item === "object") {
-			return html`<option value="${item.label}" data-weight="${item.weight}">${item.label}</option>`;
-		} else {
-			if (item === this.default) {
-				return html`<option selected value=${item}>${item}</option>`;
-			} else {
-				return html`<option value=${item}>${item}</option>`;
-			}
-		}
-	}
-
-	createElement (state, emit) {
-		return html`
-			<div class="selectWrapper">
-				<h3>${this.label}</h3>
-				<select id="${this.generateSelectIDForSaving(state)}">
-					${this.items.map(item => this.renderOption(item))}
-				</select>
-			</div>
-		`;
-	}
-
-	update (state, emit) {
-		return false;
-	}
+  return data;
 }
+
+function _templateObject3() {
+  var data = _taggedTemplateLiteral(["<option value=", ">", "</option>"]);
+
+  _templateObject3 = function _templateObject3() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject2() {
+  var data = _taggedTemplateLiteral(["<option selected value=", ">", "</option>"]);
+
+  _templateObject2 = function _templateObject2() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["<option value=\"", "\" data-weight=\"", "\">", "</option>"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+var ChooComponent = require("choo/component");
+
+var html = require("choo/html");
+
+var raw = require("choo/html/raw");
+
+module.exports =
+/*#__PURE__*/
+function (_ChooComponent) {
+  _inherits(Select, _ChooComponent);
+
+  function Select(input, weight) {
+    var _this;
+
+    _classCallCheck(this, Select);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Select).call(this));
+
+    if (typeof input === "string") {
+      _this.label = input;
+      _this.items = ["Ja", "Denk het wel", "Onbekend", "Denk het niet", "Nee"];
+      _this.default = "Onbekend";
+    } else {
+      Object.assign(_assertThisInitialized(_assertThisInitialized(_this)), input);
+    }
+
+    _this.weight = weight;
+    return _this;
+  }
+
+  _createClass(Select, [{
+    key: "save",
+    value: function save() {
+      var value = this.element.querySelector("select").value;
+      var weight = this.weight || this.items.find(function (item) {
+        return item.label === value;
+      }).weight;
+      return {
+        id: this._id,
+        value: value,
+        weight: weight,
+        label: this.label
+      };
+    }
+  }, {
+    key: "set",
+    value: function set(value) {
+      this.element.querySelector("select").value = value;
+    }
+  }, {
+    key: "generateSelectIDForSaving",
+    value: function generateSelectIDForSaving(state) {
+      return "select".concat(state.selectIDCount++);
+    }
+  }, {
+    key: "renderOption",
+    value: function renderOption(item) {
+      if (_typeof(item) === "object") {
+        return html(_templateObject(), item.label, item.weight, item.label);
+      } else {
+        if (item === this.default) {
+          return html(_templateObject2(), item, item);
+        } else {
+          return html(_templateObject3(), item, item);
+        }
+      }
+    }
+  }, {
+    key: "createElement",
+    value: function createElement(state, emit) {
+      var _this2 = this;
+
+      return html(_templateObject4(), this.label, this.generateSelectIDForSaving(state), this.items.map(function (item) {
+        return _this2.renderOption(item);
+      }));
+    }
+  }, {
+    key: "update",
+    value: function update(state, emit) {
+      return false;
+    }
+  }]);
+
+  return Select;
+}(ChooComponent);
+
 },{"choo/component":8,"choo/html":9,"choo/html/raw":10}],49:[function(require,module,exports){
-const ChooComponent = require("choo/component");
-const html = require("choo/html");
+"use strict";
 
-module.exports = class ZwaarstePuntjes extends ChooComponent {
-	constructor () {
-		super();
-		this.best = [];
-		this.worst = [];
-	}
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-	set (best, worst) {
-		this.best = best;
-		this.worst = worst;
-	}
+function _templateObject3() {
+  var data = _taggedTemplateLiteral(["<li class=\"worst\">", ": ", "</li>"]);
 
-	createElement (state, emit) {
-		return html`
-			<div id="zwaarstePuntjes" class="card">
-				<h2>Belangrijkste punten</h2>
-				<h3>Bekijk hier de punten waarop u iemand kan complimenteren, en de punten waaraan nog gewerkt kan worden.</h3>
-				<ul>
-					${this.best.map(item => html`<li class="best">${item.label}: ${item.value}</li>`)}
-					${this.worst.map(item => html`<li class="worst">${item.label}: ${item.value}</li>`)}
-				</ul>
-			</div>
-		`;
-	}
+  _templateObject3 = function _templateObject3() {
+    return data;
+  };
 
-	update (state, emit) {
-		return true;
-	}
+  return data;
 }
+
+function _templateObject2() {
+  var data = _taggedTemplateLiteral(["<li class=\"best\">", ": ", "</li>"]);
+
+  _templateObject2 = function _templateObject2() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["\n\t\t\t<div id=\"zwaarstePuntjes\" class=\"card\">\n\t\t\t\t<h2>Belangrijkste punten</h2>\n\t\t\t\t<h3>Bekijk hier de punten waarop u iemand kan complimenteren, en de punten waaraan nog gewerkt kan worden.</h3>\n\t\t\t\t<ul>\n\t\t\t\t\t", "\n\t\t\t\t\t", "\n\t\t\t\t</ul>\n\t\t\t</div>\n\t\t"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var ChooComponent = require("choo/component");
+
+var html = require("choo/html");
+
+module.exports =
+/*#__PURE__*/
+function (_ChooComponent) {
+  _inherits(ZwaarstePuntjes, _ChooComponent);
+
+  function ZwaarstePuntjes() {
+    var _this;
+
+    _classCallCheck(this, ZwaarstePuntjes);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ZwaarstePuntjes).call(this));
+    _this.best = [];
+    _this.worst = [];
+    return _this;
+  }
+
+  _createClass(ZwaarstePuntjes, [{
+    key: "set",
+    value: function set(best, worst) {
+      this.best = best;
+      this.worst = worst;
+    }
+  }, {
+    key: "createElement",
+    value: function createElement(state, emit) {
+      return html(_templateObject(), this.best.map(function (item) {
+        return html(_templateObject2(), item.label, item.value);
+      }), this.worst.map(function (item) {
+        return html(_templateObject3(), item.label, item.value);
+      }));
+    }
+  }, {
+    key: "update",
+    value: function update(state, emit) {
+      return true;
+    }
+  }]);
+
+  return ZwaarstePuntjes;
+}(ChooComponent);
+
 },{"choo/component":8,"choo/html":9}],50:[function(require,module,exports){
-module.exports = {
-  "Intercept": [
-    {label: "Intercept", weight: -7.36863}
-  ],
-  "Geslacht": [
-    {label: "Man", weight: -0.12611},
-    {label: "Vrouw", weight: 0.00001}
-  ],
-  "Ouders": [
-    {label: "Herkomst ouders", items: [
-      {label: "Onbekend", weight: 0.00000},
-      {label: "Beide ouders Nederlands", weight: -0.00001},
-      {label: "Beide ouders niet Nederlands", weight: 0.16972},
-      {label: "Een van de ouders Nederlands en de andere niet Nederlands", weight: -0.08943, good: true}
-    ]},
-    {label: "Relatie ouders", items: [
-      {label: "Onbekend", weight: 0.00000},
-      {label: "Ouders samen", weight: -0.00001, good: true},
-      {label: "Gescheiden ouders", weight: 0.27683}
-    ]},
-    {label: "Werk vader", items: [
-      {label: "Onbekend", weight: 0.23486},
-      {label: "Werkend", weight: -0.23486},
-      {label: "Geen werk en niet actief", weight: 0.33772}
-    ]},
-    {label: "Werk moeder", items: [
-      {label: "Onbekend", weight: -0.95012},
-      {label: "Werkend", weight: -0.01012},
-      {label: "Geen werk en niet actief", weight: 0.36958}
-    ]},
-    {label: "Hoogst behaalde diploma vader", items: [
-      {label: "Onbekend", weight: 0.88464},
-      {label: "Vader vmbo b/k, mbo 1 en mbo 2", weight: -0.21630, good: true},
-      {label: "Vader vmbo g/t, mbo 2 en mbo 3", weight: 0.67119},
-      {label: "Vader vwo, Wo bachelor en Wo master", weight: -12.08995, good: true}
-    ]},
-    {label: "Hoogst behaalde diploma moeder", items: [
-      {label: "Onbekend", weight: 0.03655},
-      {label: "Moeder vmbo b/k, mbo 1 en mbo 2", weight: 0.15936},
-      {label: "Moeder vmbo g/t, mbo 2 en mbo 3", weight: 0.03334},
-      {label: "Moeder vwo, Wo bachelor en Wo master", weight: -13.03162, good: true}
-    ]},
-    {label: "Leeftijd moeder", items: [
-      {label: "Onbekend", weight: 0.00000},
-      {label: "Jonger dan 20 jaar", weight: 0.45150},
-      {label: "20 tot 25 jaar", weight: 0.10852},
-      {label: "25 tot 30 jaar", weight: -0.08841, good: true},
-      {label: "35 tot 40 jaar", weight: 0.23988},
-      {label: "40 jaar en ouder", weight: -0.11153, good: true},
-    ]},
-    {label: "Leeftijd vader", items: [
-      {label: "Onbekend", weight: 0.00000},
-      {label: "Jonger dan 25 jaar", weight: -0.00587, good: true},
-      {label: "25 tot 30 jaar", weight: 0.03107},
-      {label: "35 tot 40 jaar", weight: -0.21624, good: true},
-      {label: "40 jaar of ouder", weight: -0.32645, good: true},
-    ]},
-    {label: "Verschil leeftijd ouders meer dan 5 jaar", weight: 0.28581},
-    {label: "Vader of moeder verdacht", weight: 0.50027}
-  ],
-  "Onderwijs": [
-    {label: "Soort onderwijs", items: [
-      {label: "Onbekend", weight: -0.76957},
-      {label: "Niet-regulier onderwijs", weight: -0.33031, good: true}
-    ]},
-    {label: "Voortijdig schoolverlaten", items: [
-      {label: "Onbekend", weight: 0.80564},
-      {label: "Voortijdig schoolverlaten", weight: 0.34684},
-      {label: "Uit onderwijs met startkwalificatie", weight: -13.64193, good: true},
-      {label: "Niet van toepassing", weight: 0.38736}
-    ]}
-  ],
-  "Woning en huishouden": [
-    {label: "Type woning", items: [
-      {label: "Onbekend", weight: 2.40126},
-      {label: "Huurwoning zonder huurtoeslag", weight: 0.40420},
-      {label: "Huurwoning met huurtoeslag", weight: 0.38401}
-    ]},
-    {label: "Type huishouden", items: [
-      {label: "Onbekend", weight: -13.81002},
-      {label: "Overig huishouden", weight: 0.91365},
-      {label: "Niet-gehuwd paar zonder kinderen", weight: -14.15530, good: true},
-      {label: "Niet-gehuwd paar met kinderen", weight: 0.32694},
-      {label: "Institutioneel huishouden", weight: 1.92321},
-      {label: "Gehuwd paar zonder kinderen", weight: 1.06108},
-      {label: "Eenouder-huishouden", weight: 0.49608},
-      {label: "Eenpersoons huishouden", weight: 1.71859}
-    ]}
-  ],
-  "Traject vooraf": [
-    {label: "Jeugdhulp zonder verblijf gehad", weight: 1.52774}
-  ],
-  "Delicten": [
-    {label: "Slachtoffer", weight: 0.23639},
-    {label: "Kind verdacht", weight: 0.94738},
-    {label: "Halt delict", weight: 0.36448}
-  ],
-  "Onderwijs": [
-    {label: "Verandering onderwijs niveau", items: [
-      {label: "Onbekend", weight: -1.11682},
-      {label: "Geen verandering", weight: -1.11682},
-      {label: "Afschalen", weight: 0.58732}
-    ]},
-    {label: "Actueel onderwijsniveau", items: [
-      {label: "Onbekend", weight: 0.00000},
-      {label: "Basisonderwijs", weight: 0.25232},
-      {label: "Vmbo b/k, mbo 1 en mbo 2", weight: 0.87842},
-      {label: "Vmbo g/t, mbo 3 en mbo 4", weight: 0.56882},
-      {label: "Vwo en Wo bachelor", weight: -0.83566, good: true}
-    ]}
-  ]
-};
+"use strict";
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+module.exports = _defineProperty({
+  "Intercept": [{
+    label: "Intercept",
+    weight: -7.36863
+  }],
+  "Geslacht": [{
+    label: "Man",
+    weight: -0.12611
+  }, {
+    label: "Vrouw",
+    weight: 0.00001
+  }],
+  "Ouders": [{
+    label: "Herkomst ouders",
+    items: [{
+      label: "Onbekend",
+      weight: 0.00000
+    }, {
+      label: "Beide ouders Nederlands",
+      weight: -0.00001
+    }, {
+      label: "Beide ouders niet Nederlands",
+      weight: 0.16972
+    }, {
+      label: "Een van de ouders Nederlands en de andere niet Nederlands",
+      weight: -0.08943,
+      good: true
+    }]
+  }, {
+    label: "Relatie ouders",
+    items: [{
+      label: "Onbekend",
+      weight: 0.00000
+    }, {
+      label: "Ouders samen",
+      weight: -0.00001,
+      good: true
+    }, {
+      label: "Gescheiden ouders",
+      weight: 0.27683
+    }]
+  }, {
+    label: "Werk vader",
+    items: [{
+      label: "Onbekend",
+      weight: 0.23486
+    }, {
+      label: "Werkend",
+      weight: -0.23486
+    }, {
+      label: "Geen werk en niet actief",
+      weight: 0.33772
+    }]
+  }, {
+    label: "Werk moeder",
+    items: [{
+      label: "Onbekend",
+      weight: -0.95012
+    }, {
+      label: "Werkend",
+      weight: -0.01012
+    }, {
+      label: "Geen werk en niet actief",
+      weight: 0.36958
+    }]
+  }, {
+    label: "Hoogst behaalde diploma vader",
+    items: [{
+      label: "Onbekend",
+      weight: 0.88464
+    }, {
+      label: "Vader vmbo b/k, mbo 1 en mbo 2",
+      weight: -0.21630,
+      good: true
+    }, {
+      label: "Vader vmbo g/t, mbo 2 en mbo 3",
+      weight: 0.67119
+    }, {
+      label: "Vader vwo, Wo bachelor en Wo master",
+      weight: -12.08995,
+      good: true
+    }]
+  }, {
+    label: "Hoogst behaalde diploma moeder",
+    items: [{
+      label: "Onbekend",
+      weight: 0.03655
+    }, {
+      label: "Moeder vmbo b/k, mbo 1 en mbo 2",
+      weight: 0.15936
+    }, {
+      label: "Moeder vmbo g/t, mbo 2 en mbo 3",
+      weight: 0.03334
+    }, {
+      label: "Moeder vwo, Wo bachelor en Wo master",
+      weight: -13.03162,
+      good: true
+    }]
+  }, {
+    label: "Leeftijd moeder",
+    items: [{
+      label: "Onbekend",
+      weight: 0.00000
+    }, {
+      label: "Jonger dan 20 jaar",
+      weight: 0.45150
+    }, {
+      label: "20 tot 25 jaar",
+      weight: 0.10852
+    }, {
+      label: "25 tot 30 jaar",
+      weight: -0.08841,
+      good: true
+    }, {
+      label: "35 tot 40 jaar",
+      weight: 0.23988
+    }, {
+      label: "40 jaar en ouder",
+      weight: -0.11153,
+      good: true
+    }]
+  }, {
+    label: "Leeftijd vader",
+    items: [{
+      label: "Onbekend",
+      weight: 0.00000
+    }, {
+      label: "Jonger dan 25 jaar",
+      weight: -0.00587,
+      good: true
+    }, {
+      label: "25 tot 30 jaar",
+      weight: 0.03107
+    }, {
+      label: "35 tot 40 jaar",
+      weight: -0.21624,
+      good: true
+    }, {
+      label: "40 jaar of ouder",
+      weight: -0.32645,
+      good: true
+    }]
+  }, {
+    label: "Verschil leeftijd ouders meer dan 5 jaar",
+    weight: 0.28581
+  }, {
+    label: "Vader of moeder verdacht",
+    weight: 0.50027
+  }],
+  "Onderwijs": [{
+    label: "Soort onderwijs",
+    items: [{
+      label: "Onbekend",
+      weight: -0.76957
+    }, {
+      label: "Niet-regulier onderwijs",
+      weight: -0.33031,
+      good: true
+    }]
+  }, {
+    label: "Voortijdig schoolverlaten",
+    items: [{
+      label: "Onbekend",
+      weight: 0.80564
+    }, {
+      label: "Voortijdig schoolverlaten",
+      weight: 0.34684
+    }, {
+      label: "Uit onderwijs met startkwalificatie",
+      weight: -13.64193,
+      good: true
+    }, {
+      label: "Niet van toepassing",
+      weight: 0.38736
+    }]
+  }],
+  "Woning en huishouden": [{
+    label: "Type woning",
+    items: [{
+      label: "Onbekend",
+      weight: 2.40126
+    }, {
+      label: "Huurwoning zonder huurtoeslag",
+      weight: 0.40420
+    }, {
+      label: "Huurwoning met huurtoeslag",
+      weight: 0.38401
+    }]
+  }, {
+    label: "Type huishouden",
+    items: [{
+      label: "Onbekend",
+      weight: -13.81002
+    }, {
+      label: "Overig huishouden",
+      weight: 0.91365
+    }, {
+      label: "Niet-gehuwd paar zonder kinderen",
+      weight: -14.15530,
+      good: true
+    }, {
+      label: "Niet-gehuwd paar met kinderen",
+      weight: 0.32694
+    }, {
+      label: "Institutioneel huishouden",
+      weight: 1.92321
+    }, {
+      label: "Gehuwd paar zonder kinderen",
+      weight: 1.06108
+    }, {
+      label: "Eenouder-huishouden",
+      weight: 0.49608
+    }, {
+      label: "Eenpersoons huishouden",
+      weight: 1.71859
+    }]
+  }],
+  "Traject vooraf": [{
+    label: "Jeugdhulp zonder verblijf gehad",
+    weight: 1.52774
+  }],
+  "Delicten": [{
+    label: "Slachtoffer",
+    weight: 0.23639
+  }, {
+    label: "Kind verdacht",
+    weight: 0.94738
+  }, {
+    label: "Halt delict",
+    weight: 0.36448
+  }]
+}, "Onderwijs", [{
+  label: "Verandering onderwijs niveau",
+  items: [{
+    label: "Onbekend",
+    weight: -1.11682
+  }, {
+    label: "Geen verandering",
+    weight: -1.11682
+  }, {
+    label: "Afschalen",
+    weight: 0.58732
+  }]
+}, {
+  label: "Actueel onderwijsniveau",
+  items: [{
+    label: "Onbekend",
+    weight: 0.00000
+  }, {
+    label: "Basisonderwijs",
+    weight: 0.25232
+  }, {
+    label: "Vmbo b/k, mbo 1 en mbo 2",
+    weight: 0.87842
+  }, {
+    label: "Vmbo g/t, mbo 3 en mbo 4",
+    weight: 0.56882
+  }, {
+    label: "Vwo en Wo bachelor",
+    weight: -0.83566,
+    good: true
+  }]
+}]);
+
 },{}],51:[function(require,module,exports){
-const choo = require("choo");
-const html = require("choo/html");
-const RisicoFactor = require("./components/RisicoFactor");
-const OpletPuntjes = require("./components/OpletPuntjes");
-const ZwaarstePuntjes = require("./components/ZwaarstePuntjes");
-const Form = require("./components/Form");
-const FormCategory = require("./components/FormCategory");
-const Select = require("./components/Select");
-const SearchBar = require("./components/SearchBar");
+"use strict";
 
-const app = choo(); //Choo choo boiis, the pain train is leaving!
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["\n\t\t<body>\n\t\t\t<main id=\"viewport\">\n\t\t\t\t<h1>Risicotaxatie</h1>\n\t\t\t\t<div class=\"flexContainer\">\n\t\t\t\t\t", "\n\t\t\t\t\t", "\n\t\t\t\t</div>\n\t\t\t\t<div class=\"flexContainer\">\n\t\t\t\t\t", "\n\t\t\t\t\t", "\n\t\t\t\t\t", "\n\t\t\t\t</div>\n\t\t\t</main>\n\t\t</body>\n\t"]);
 
-app.use((state, emitter) => {
-	state.result = 0;
-	state.selectIDCount = 0;
-	state.data = require("./data");
-	state.categories = [];
-	for (const category in state.data) {
-		if (category === "Intercept") continue;
-		const factors = state.data[category];
-		const selects = factors.map(factor => {
-			if (factor.items) return new Select(factor);
-			return new Select(factor.label, factor.weight);
-		});
-		state.categories.push(new FormCategory(category, selects));
-	}
-	delete state.data;
-	state.components.form = new Form(state.categories);
-	state.components.risicoFactor = new RisicoFactor(state.result);
-	state.components.opletPuntjes = new OpletPuntjes();
-	state.components.zwaarstePuntjes = new ZwaarstePuntjes();
-	state.components.searchBar = new SearchBar();
+  _templateObject = function _templateObject() {
+    return data;
+  };
 
-	emitter.on("DOMContentLoaded", () => {
-		//Add select eventlisteners
-		document.querySelectorAll("select").forEach(select => {
-			select.addEventListener("change", event => {
-				//Keep track of amount of filled fields
-				trackFieldFillCount(event, state);
-				emitter.emit("saveAnswers");
-			});
+  return data;
+}
 
-			loadState();
-			trackFieldFillCount(null, state);
-			emitter.emit("saveAnswers");
-		});
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
-		//Some nice js to beautify <3
-		window.addEventListener("resize", () => {
-			//Timeout to only refresh UI once after resizing
-			clearTimeout(window.UIUpdateTimeout);
-			window.UIUpdateTimeout = setTimeout(() => {
-				fitTitlesToForm();
-			}, 500);
-		});
-		fitTitlesToForm();
-		updateULTransitionTargetHeight();
+var choo = require("choo");
 
-	});
+var html = require("choo/html");
 
-	emitter.on("saveAnswers", () => {
-		state.answers = [];
-		state.categories.forEach(category => {
-			category.selects.forEach(select => {
-				state.answers.push(select.save());
-			});
-		});
+var RisicoFactor = require("./components/RisicoFactor");
 
-		state.denkHetjes = state.answers.filter(answer => {
-			return answer.value.includes("Denk het");
-		});
+var OpletPuntjes = require("./components/OpletPuntjes");
 
-		const filteredAnswers = state.answers.filter(answer => {
-			return !answer.value.toLowerCase().includes("onbekend");
-		});
-		state.best = getBestFrom(filteredAnswers);
-		state.worst = getWorstFrom(filteredAnswers);
-			
-		state.components.opletPuntjes.set(state.denkHetjes);
-		state.components.zwaarstePuntjes.set(state.best, state.worst);
+var ZwaarstePuntjes = require("./components/ZwaarstePuntjes");
 
-		emitter.emit("calculateRisk");
-		emitter.emit("render");
-	});
+var Form = require("./components/Form");
 
-	emitter.on("calculateRisk", () => {
-		const risk = state.answers
-			.reduce((total, answer) => total + answer.weight, 0);
-		const formule = Number(
-			Math.round(
-				1 / (
-					1 + Math.exp(
-						-1 * (
-							-8.57219 + risk
-						)
-					)
-				) * 100
-			)
-		);
-		state.result = formule;
-	});
+var FormCategory = require("./components/FormCategory");
 
-	emitter.on("*", () => saveState());
-	window.addEventListener("beforeunload", () => saveState());
+var Select = require("./components/Select");
+
+var SearchBar = require("./components/SearchBar");
+
+var app = choo(); //Choo choo boiis, the pain train is leaving!
+
+app.use(function (state, emitter) {
+  state.result = 0;
+  state.selectIDCount = 0;
+  state.data = require("./data");
+  state.categories = [];
+
+  for (var category in state.data) {
+    if (category === "Intercept") continue;
+    var factors = state.data[category];
+    var selects = factors.map(function (factor) {
+      if (factor.items) return new Select(factor);
+      return new Select(factor.label, factor.weight);
+    });
+    state.categories.push(new FormCategory(category, selects));
+  }
+
+  delete state.data;
+  state.components.form = new Form(state.categories);
+  state.components.risicoFactor = new RisicoFactor(state.result);
+  state.components.opletPuntjes = new OpletPuntjes();
+  state.components.zwaarstePuntjes = new ZwaarstePuntjes();
+  state.components.searchBar = new SearchBar();
+  emitter.on("DOMContentLoaded", function () {
+    //Add select eventlisteners
+    document.querySelectorAll("select").forEach(function (select) {
+      select.addEventListener("change", function (event) {
+        //Keep track of amount of filled fields
+        trackFieldFillCount(event, state);
+        emitter.emit("saveAnswers");
+      });
+      loadState();
+      trackFieldFillCount(null, state);
+      emitter.emit("saveAnswers");
+    }); //Some nice js to beautify <3
+
+    window.addEventListener("resize", function () {
+      //Timeout to only refresh UI once after resizing
+      clearTimeout(window.UIUpdateTimeout);
+      window.UIUpdateTimeout = setTimeout(function () {
+        fitTitlesToForm();
+      }, 500);
+    });
+    fitTitlesToForm();
+    updateULTransitionTargetHeight();
+  });
+  emitter.on("saveAnswers", function () {
+    state.answers = [];
+    state.categories.forEach(function (category) {
+      category.selects.forEach(function (select) {
+        state.answers.push(select.save());
+      });
+    });
+    state.denkHetjes = state.answers.filter(function (answer) {
+      return answer.value.includes("Denk het");
+    });
+    var filteredAnswers = state.answers.filter(function (answer) {
+      return !answer.value.toLowerCase().includes("onbekend");
+    });
+    state.best = getBestFrom(filteredAnswers);
+    state.worst = getWorstFrom(filteredAnswers);
+    state.components.opletPuntjes.set(state.denkHetjes);
+    state.components.zwaarstePuntjes.set(state.best, state.worst);
+    emitter.emit("calculateRisk");
+    emitter.emit("render");
+  });
+  emitter.on("calculateRisk", function () {
+    var risk = state.answers.reduce(function (total, answer) {
+      return total + answer.weight;
+    }, 0);
+    var formule = Number(Math.round(1 / (1 + Math.exp(-1 * (-8.57219 + risk))) * 100));
+    state.result = formule;
+  });
+  emitter.on("*", function () {
+    return saveState();
+  });
+  window.addEventListener("beforeunload", function () {
+    return saveState();
+  });
 });
-
-app.route("/", (state, emit) => {
-	return html`
-		<body>
-			<main id="viewport">
-				<h1>Risicotaxatie</h1>
-				<div class="flexContainer">
-					${state.components.searchBar.render(state, emit)}
-					${state.components.form.render(state, emit)}
-				</div>
-				<div class="flexContainer">
-					${state.components.risicoFactor.render(state, emit)}
-					${state.components.opletPuntjes.render(state, emit)}
-					${state.components.zwaarstePuntjes.render(state, emit)}
-				</div>
-			</main>
-		</body>
-	`;
+app.route("/", function (state, emit) {
+  return html(_templateObject(), state.components.searchBar.render(state, emit), state.components.form.render(state, emit), state.components.risicoFactor.render(state, emit), state.components.opletPuntjes.render(state, emit), state.components.zwaarstePuntjes.render(state, emit));
 });
-
 app.mount("body");
 
 function trackFieldFillCount(event, state) {
-	function updateFilledFieldCount(ul) {
-		let counter = ul.querySelector(".filledCounter");
-		const formCategory = state.categories.find(category => category._id === ul.id);
-		const filledCount = formCategory.selects.reduce((total, selectWrapper) => {
-			const select = selectWrapper.element.querySelector("select");
-			return total + !(select.value.toLowerCase().includes("onbekend"));
-		}, 0);
-		counter.innerText = filledCount + counter.innerText.slice(counter.innerText.indexOf("/"));
-		if (filledCount === formCategory.selects.length) {
-			ul.style.filter = "opacity(.25) saturate(0)";
-			ul.classList.add("closed");
-		}
-		else {
-			ul.removeAttribute("style");
-		}
-	}
+  function updateFilledFieldCount(ul) {
+    var counter = ul.querySelector(".filledCounter");
+    var formCategory = state.categories.find(function (category) {
+      return category._id === ul.id;
+    });
+    var filledCount = formCategory.selects.reduce(function (total, selectWrapper) {
+      var select = selectWrapper.element.querySelector("select");
+      return total + !select.value.toLowerCase().includes("onbekend");
+    }, 0);
+    counter.innerText = filledCount + counter.innerText.slice(counter.innerText.indexOf("/"));
 
-	if (event) {
-		let ul = event.srcElement;
-		while (ul.nodeName !== "UL") {
-			ul = ul.parentElement;
-		}
-		updateFilledFieldCount(ul);
-	} else {
-		document.querySelectorAll(".formCategory").forEach(formCategory => {
-			updateFilledFieldCount(formCategory);
-		});
-	}
+    if (filledCount === formCategory.selects.length) {
+      ul.style.filter = "opacity(.5) saturate(0)";
+      ul.classList.add("closed");
+    } else {
+      ul.removeAttribute("style");
+    }
+  }
+
+  if (event) {
+    var ul = event.srcElement;
+
+    while (ul.nodeName !== "UL") {
+      ul = ul.parentElement;
+    }
+
+    updateFilledFieldCount(ul);
+  } else {
+    document.querySelectorAll(".formCategory").forEach(function (formCategory) {
+      updateFilledFieldCount(formCategory);
+    });
+  }
 }
 
-function updateULTransitionTargetHeight () {
-	document.querySelectorAll("form>ul").forEach(ul => {
-		const height = Array.from(ul.children)
-			.filter(element => element.nodeName !== "IMG")
-			.reduce((height, element) => height + Number(getComputedStyle(element).height.slice(0, -2)), 0);
-		const padding = Number(getComputedStyle(ul).padding.slice(0, -2));
-		const margin = Number(getComputedStyle(ul).marginBottom.slice(0, -2));
-		const errorMargin = 100;
-		ul.style.maxHeight = `${height + padding * 4 + margin * 4 + errorMargin}px`;
-	});
+function updateULTransitionTargetHeight() {
+  document.querySelectorAll("form>ul").forEach(function (ul) {
+    var height = Array.from(ul.children).filter(function (element) {
+      return element.nodeName !== "IMG";
+    }).reduce(function (height, element) {
+      return height + Number(getComputedStyle(element).height.slice(0, -2));
+    }, 0);
+    var padding = Number(getComputedStyle(ul).padding.slice(0, -2));
+    var margin = Number(getComputedStyle(ul).marginBottom.slice(0, -2));
+    var errorMargin = 100;
+    ul.style.maxHeight = "".concat(height + padding * 4 + margin * 4 + errorMargin, "px");
+  });
 }
 
-function fitTitlesToForm () {
-	const targetWidth = Number(getComputedStyle(document.querySelector("form>ul")).width.slice(0, -2) - 120);
-	document.querySelectorAll("form>ul>h2").forEach(h2 => {
-		h2.style.display = "inline-block";
-		h2.style.fontSize = "1px";
-		let h2Style = getComputedStyle(h2);
-		let width = Number(h2Style.width.slice(0, -2));
-		let fontSize = Number(h2Style.fontSize.slice(0, -2));
-		let i = 0;
-		const stepSize = .2;
-		while (width < targetWidth) {
-			h2.style.fontSize = `${fontSize + (i++ * stepSize)}px`;
-			h2Style = getComputedStyle(h2);
-			width = Number(h2Style.width.slice(0, -2));
-			fontSize = Number(h2Style.fontSize.slice(0, -2));
-		}
-		h2.style.fontSize = `${Math.min(fontSize, 24)}px`;
-		h2.style.display = "block";
-	});
+function fitTitlesToForm() {
+  var targetWidth = Number(getComputedStyle(document.querySelector("form>ul")).width.slice(0, -2) - 120);
+  document.querySelectorAll("form>ul>h2").forEach(function (h2) {
+    h2.style.display = "inline-block";
+    h2.style.fontSize = "1px";
+    var h2Style = getComputedStyle(h2);
+    var width = Number(h2Style.width.slice(0, -2));
+    var fontSize = Number(h2Style.fontSize.slice(0, -2));
+    var i = 0;
+    var stepSize = .2;
+
+    while (width < targetWidth) {
+      h2.style.fontSize = "".concat(fontSize + i++ * stepSize, "px");
+      h2Style = getComputedStyle(h2);
+      width = Number(h2Style.width.slice(0, -2));
+      fontSize = Number(h2Style.fontSize.slice(0, -2));
+    }
+
+    h2.style.fontSize = "".concat(Math.min(fontSize, 24), "px");
+    h2.style.display = "block";
+  });
 }
 
-function getWorstFrom (input) { 
-	return input.filter(item => Number(item.weight) > 0 && item.value === "Ja")
-		.concat(
-			input.filter(item => Number(item.weight) < 0 && item.value === "Nee")
-		)
-		.sort((a, b) => Math.abs(Number(a.weight)) > Math.abs(Number(b.weight)) ? 1 : -1)
-		.slice(0, 3);
+function getWorstFrom(input) {
+  return input.filter(function (item) {
+    return Number(item.weight) > 0 && item.value === "Ja";
+  }).concat(input.filter(function (item) {
+    return Number(item.weight) < 0 && item.value === "Nee";
+  })).sort(function (a, b) {
+    return Math.abs(Number(a.weight)) > Math.abs(Number(b.weight)) ? 1 : -1;
+  }).slice(0, 3);
 }
 
-function getBestFrom (input) {
-	return input.filter(item => Number(item.weight) <= 0 && item.value === "Ja")
-		.concat(
-			input.filter(item => Number(item.weight) >= 0 && item.value === "Nee")
-		)
-		.sort((a, b) => Math.abs(Number(a.weight)) > Math.abs(Number(b.weight)) ? 1 : -1)
-		.slice(0, 3);
+function getBestFrom(input) {
+  return input.filter(function (item) {
+    return Number(item.weight) <= 0 && item.value === "Ja";
+  }).concat(input.filter(function (item) {
+    return Number(item.weight) >= 0 && item.value === "Nee";
+  })).sort(function (a, b) {
+    return Math.abs(Number(a.weight)) > Math.abs(Number(b.weight)) ? 1 : -1;
+  }).slice(0, 3);
 }
 
-function saveState () {
-	const selects = [];
-	document.querySelectorAll("select").forEach(select => {
-		selects.push({id: select.id, index: select.selectedIndex});
-	});
-	localStorage.setItem("selects", JSON.stringify(selects));
+function saveState() {
+  var selects = [];
+  document.querySelectorAll("select").forEach(function (select) {
+    selects.push({
+      id: select.id,
+      index: select.selectedIndex
+    });
+  });
+  localStorage.setItem("selects", JSON.stringify(selects));
 }
 
-function loadState () {
-	const selects = JSON.parse(localStorage.getItem("selects"));
-	if (!selects) return;
-	selects.forEach(select => {
-		const selectElement = document.querySelector(`#${select.id}`);
-		selectElement.selectedIndex = select.index;
-	});
+function loadState() {
+  var selects = JSON.parse(localStorage.getItem("selects"));
+  if (!selects) return;
+  selects.forEach(function (select) {
+    var selectElement = document.querySelector("#".concat(select.id));
+    selectElement.selectedIndex = select.index;
+  });
 }
+
 },{"./components/Form":43,"./components/FormCategory":44,"./components/OpletPuntjes":45,"./components/RisicoFactor":46,"./components/SearchBar":47,"./components/Select":48,"./components/ZwaarstePuntjes":49,"./data":50,"choo":11,"choo/html":9}]},{},[51]);

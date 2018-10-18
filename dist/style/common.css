@@ -6,7 +6,10 @@
 
 #viewport {
 	padding: 1rem;
-	user-select: none;
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	        user-select: none;
 	font-family: 'Work Sans';
 }
 
@@ -19,6 +22,7 @@
 }
 
 #searchBar {
+	position: -webkit-sticky;
 	position: sticky;
 	top: 0rem;
 	z-index: 1;
@@ -34,6 +38,14 @@
 	background-size: 1rem;
 } #searchBar:focus {
 	outline: none;
+} #searchBar::-webkit-input-placeholder {
+	color: #D1D8EF;
+} #searchBar::-moz-placeholder {
+	color: #D1D8EF;
+} #searchBar:-ms-input-placeholder {
+	color: #D1D8EF;
+} #searchBar::-ms-input-placeholder {
+	color: #D1D8EF;
 } #searchBar::placeholder {
 	color: #D1D8EF;
 }
@@ -45,6 +57,7 @@ form>ul {
 	color: white;
 	margin-bottom: .5rem;
 	background-size: cover;
+	-webkit-transition: max-height .25s ease;
 	transition: max-height .25s ease;
 	position: relative;
 	box-shadow: 0 .1rem .125em 0 #D1D8EF, 0 0 .1rem .1rem rgba(0, 0, 0, .025) inset;
@@ -54,8 +67,13 @@ form>ul {
 	top: 1rem;
 	right: 1rem;
 	width: 1rem;
-	transform: rotate(180deg);
+	-webkit-transform: rotate(180deg);
+	    -ms-transform: rotate(180deg);
+	        transform: rotate(180deg);
+	-webkit-transition: -webkit-transform .25s ease;
+	transition: -webkit-transform .25s ease;
 	transition: transform .25s ease;
+	transition: transform .25s ease, -webkit-transform .25s ease;
 	pointer-events: none;
 } form>ul>.filledCounter {
 	position: absolute;
@@ -63,7 +81,9 @@ form>ul {
 	right: 2.5rem;
 	pointer-events: none;
 } form>ul.closed>img {
-	transform: rotate(0deg);
+	-webkit-transform: rotate(0deg);
+	    -ms-transform: rotate(0deg);
+	        transform: rotate(0deg);
 } form>ul.closed {
 	max-height: 2.5rem !important;
 	border-radius: 999rem;
@@ -76,16 +96,22 @@ form>ul {
 } form>ul.closed>h2 {
 	margin-left: .5rem;
 } form>ul:nth-of-type(1n) {
+	background-image: url("../images/list_bg.png"), -webkit-linear-gradient(top right, #FAE1F6, #E8A9E5);
 	background-image: url("../images/list_bg.png"), linear-gradient(to bottom left, #FAE1F6, #E8A9E5);
 } form>ul:nth-of-type(2n) {
+  background-image: url("../images/list_bg.png"), -webkit-linear-gradient(top left, #F1E089, #E6995E);
   background-image: url("../images/list_bg.png"), linear-gradient(to bottom right, #F1E089, #E6995E);
 } form>ul:nth-of-type(3n) {
+  background-image: url("../images/list_bg.png"), -webkit-linear-gradient(top right, #CEFBE3, #53D9E7);
   background-image: url("../images/list_bg.png"), linear-gradient(to bottom left, #CEFBE3, #53D9E7);
 } form>ul:nth-of-type(4n) {
+  background-image: url("../images/list_bg.png"), -webkit-linear-gradient(top left, #FEBEBD, #FA8782);
   background-image: url("../images/list_bg.png"), linear-gradient(to bottom right, #FEBEBD, #FA8782);
 } form>ul:nth-of-type(5n) {
+  background-image: url("../images/list_bg.png"), -webkit-linear-gradient(top left, #DB3F70, #EA4CE7);
   background-image: url("../images/list_bg.png"), linear-gradient(to bottom right, #DB3F70, #EA4CE7);
 } form>ul:nth-of-type(6n) {
+  background-image: url("../images/list_bg.png"), -webkit-linear-gradient(top left, #A935DE, #46A1FB);
   background-image: url("../images/list_bg.png"), linear-gradient(to bottom right, #A935DE, #46A1FB);
 }
 
@@ -93,7 +119,10 @@ h1 {
 	font-weight: 600;
 	text-align: center;
 	margin: 1rem 0 2rem 0;
-	flex: 0 0 100%;
+	-webkit-box-flex: 0;
+	-webkit-flex: 0 0 100%;
+	    -ms-flex: 0 0 100%;
+	        flex: 0 0 100%;
 }
 
 h2, h3 {
@@ -107,9 +136,18 @@ h2, h3 {
 	height: 7.5rem;
 	margin: 0 auto 2rem auto;
 	font-size: 5rem;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
 	display: flex;
-	align-items: center;
-	justify-content: center;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
 }
 
 .card {
@@ -144,16 +182,26 @@ h2, h3 {
 	text-shadow: none;
 	border-radius: .25rem;
 	padding: .5rem;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
 	display: flex;
+	height: -webkit-calc(100% - 5.33rem);
 	height: calc(100% - 5.33rem);
 } form li+li {
 	margin-top: .5rem;
 } .selectWrapper>h3 {
-	flex: 0 1 50%;
+	-webkit-box-flex: 0;
+	-webkit-flex: 0 1 50%;
+	    -ms-flex: 0 1 50%;
+	        flex: 0 1 50%;
 	word-break: break-word;
 	font-size: 1rem;
 } .selectWrapper>select {
-	flex: 1 0 50%;
+	-webkit-box-flex: 1;
+	-webkit-flex: 1 0 50%;
+	    -ms-flex: 1 0 50%;
+	        flex: 1 0 50%;
 	border-radius: 1rem;
 	border: none;
 	height: 1.5rem;
@@ -166,32 +214,58 @@ h2, h3 {
 @media all and (min-width: 640px) {
 	body {
 		background-color: #F6F6FF;
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: -ms-flexbox;
 		display: flex;
-		align-items: center;
-		justify-content: center;
+		-webkit-box-align: center;
+		-webkit-align-items: center;
+		    -ms-flex-align: center;
+		        align-items: center;
+		-webkit-box-pack: center;
+		-webkit-justify-content: center;
+		    -ms-flex-pack: center;
+		        justify-content: center;
 		height: 100vh;
 		width: 100vw;
 	}
 
 	#viewport {
+		width: -webkit-calc(460px + 20vw);
 		width: calc(460px + 20vw);
 		height: 90vh;
 		border-radius: .5rem;
 		box-shadow: 0 .1rem 2rem .1rem #D1D8EF;
 		background-color: white;
 		overflow-y: auto;
+		display: -webkit-box;
+		display: -webkit-flex;
+		display: -ms-flexbox;
 		display: flex;
-		flex-flow: row;
-		flex-wrap: wrap;
-		align-items: flex-start;
+		-webkit-box-orient: horizontal;
+		-webkit-box-direction: normal;
+		-webkit-flex-flow: row;
+		    -ms-flex-flow: row;
+		        flex-flow: row;
+		-webkit-flex-wrap: wrap;
+		    -ms-flex-wrap: wrap;
+		        flex-wrap: wrap;
+		-webkit-box-align: start;
+		-webkit-align-items: flex-start;
+		    -ms-flex-align: start;
+		        align-items: flex-start;
 	}
 
 	.flexContainer {
-		flex-shrink: 0;
+		-webkit-flex-shrink: 0;
+		    -ms-flex-negative: 0;
+		        flex-shrink: 0;
+		width: -webkit-calc(50% - 1rem);
 		width: calc(50% - 1rem);
 	} .flexContainer+.flexContainer {
 		margin-left: 2rem;
 	} .flexContainer:last-of-type {
+		position: -webkit-sticky;
 		position: sticky;
 		top: 0;
 	}
