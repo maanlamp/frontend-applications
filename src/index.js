@@ -10,7 +10,7 @@ const SearchBar = require("./components/SearchBar");
 
 const app = choo(); //Choo choo boiis, the pain train is leaving!
 
-app.use(require("choo-persist"));
+app.use(require("choo-persist")());
 
 app.use((state, emitter) => {
 	state.result = 0;
