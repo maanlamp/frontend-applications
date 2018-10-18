@@ -30,6 +30,10 @@ module.exports = class Select extends ChooComponent {
 		this.element.querySelector("select").value = value;
 	}
 
+	generateSelectIDForSaving (state) {
+		return `select${state.selectIDCount++}`;
+	}
+
 	renderOption (item) {
 		if (typeof item === "object") {
 			return html`<option value="${item.label}" data-weight="${item.weight}">${item.label}</option>`;
@@ -46,7 +50,7 @@ module.exports = class Select extends ChooComponent {
 		return html`
 			<div class="selectWrapper">
 				<h3>${this.label}</h3>
-				<select>
+				<select id="${this.generateSelectIDForSaving(state)}">
 					${this.items.map(item => this.renderOption(item))}
 				</select>
 			</div>

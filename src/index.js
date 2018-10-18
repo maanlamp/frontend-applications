@@ -12,6 +12,7 @@ const app = choo(); //Choo choo boiis, the pain train is leaving!
 
 app.use((state, emitter) => {
 	state.result = 0;
+	state.selectIDCount = 0;
 	state.data = require("./data");
 	state.categories = [];
 	for (const category in state.data) {
@@ -38,6 +39,10 @@ app.use((state, emitter) => {
 				trackFieldFillCount(event, state);
 				emitter.emit("saveAnswers");
 			});
+
+			loadState();
+			trackFieldFillCount(null, state);
+			emitter.emit("saveAnswers");
 		});
 
 		//Some nice js to beautify <3
@@ -48,6 +53,7 @@ app.use((state, emitter) => {
 				fitTitlesToForm();
 			}, 500);
 		});
+
 		fitTitlesToForm();
 		updateULTransitionTargetHeight();
 	});
@@ -93,6 +99,9 @@ app.use((state, emitter) => {
 		);
 		state.result = formule;
 	});
+
+	emitter.on("*", () => saveState());
+	window.addEventListener("beforeunload", () => saveState());
 });
 
 app.route("/", (state, emit) => {
@@ -117,22 +126,33 @@ app.route("/", (state, emit) => {
 app.mount("body");
 
 function trackFieldFillCount(event, state) {
-	let ul = event.srcElement;
-	while (ul.nodeName !== "UL") {
-		ul = ul.parentElement;
+	function updateFilledFieldCount(ul) {
+		let counter = ul.querySelector(".filledCounter");
+		const formCategory = state.categories.find(category => category._id === ul.id);
+		const filledCount = formCategory.selects.reduce((total, selectWrapper) => {
+			const select = selectWrapper.element.querySelector("select");
+			return total + !(select.value.toLowerCase().includes("onbekend"));
+		}, 0);
+		counter.innerText = filledCount + counter.innerText.slice(counter.innerText.indexOf("/"));
+		if (filledCount === formCategory.selects.length) {
+			ul.style.filter = "opacity(.5) saturate(0)";
+			ul.classList.add("closed");
+		}
+		else {
+			ul.removeAttribute("style");
+		}
 	}
-	let counter = ul.querySelector(".filledCounter");
-	const formCategory = state.categories.find(category => category._id === ul.id);
-	const filledCount = formCategory.selects.reduce((total, selectWrapper) => {
-		const select = selectWrapper.element.querySelector("select");
-		return total + !(select.value.toLowerCase().includes("onbekend"));
-	}, 0);
-	counter.innerText = filledCount + counter.innerText.slice(counter.innerText.indexOf("/"));
-	if (filledCount === formCategory.selects.length) {
-		ul.style.filter = "opacity(.25) saturate(0)";
-		ul.classList.add("closed");
+
+	if (event) {
+		let ul = event.srcElement;
+		while (ul.nodeName !== "UL") {
+			ul = ul.parentElement;
+		}
+		updateFilledFieldCount(ul);
 	} else {
-		ul.removeAttribute("style");
+		document.querySelectorAll(".formCategory").forEach(formCategory => {
+			updateFilledFieldCount(formCategory);
+		});
 	}
 }
 
@@ -187,10 +207,19 @@ function getBestFrom (input) {
 		.slice(0, 3);
 }
 
-function save (data) {
-	localStorage.setItem("data", JSON.stringify(data));
+function saveState () {
+	const selects = [];
+	document.querySelectorAll("select").forEach(select => {
+		selects.push({id: select.id, index: select.selectedIndex});
+	});
+	localStorage.setItem("selects", JSON.stringify(selects));
 }
 
-function load () {
-	return JSON.parse(localStorage.getItem("data")) || {};
+function loadState () {
+	const selects = JSON.parse(localStorage.getItem("selects"));
+	if (!selects) return;
+	selects.forEach(select => {
+		const selectElement = document.querySelector(`#${select.id}`);
+		selectElement.selectedIndex = select.index;
+	});
 }

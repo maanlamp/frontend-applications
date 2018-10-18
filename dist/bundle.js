@@ -1,193 +1,4 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-const choo = require("choo");
-const html = require("choo/html");
-const RisicoFactor = require("./components/RisicoFactor");
-const OpletPuntjes = require("./components/OpletPuntjes");
-const ZwaarstePuntjes = require("./components/ZwaarstePuntjes");
-const Form = require("./components/Form");
-const FormCategory = require("./components/FormCategory");
-const Select = require("./components/Select");
-const SearchBar = require("./components/SearchBar");
-
-const app = choo(); //Choo choo boiis, the pain train is leaving!
-
-app.use((state, emitter) => {
-	state.result = 0;
-	state.data = require("./data");
-	state.categories = [];
-	for (const category in state.data) {
-		if (category === "Intercept") continue;
-		const factors = state.data[category];
-		const selects = factors.map(factor => {
-			if (factor.items) return new Select(factor);
-			return new Select(factor.label, factor.weight);
-		});
-		state.categories.push(new FormCategory(category, selects));
-	}
-	delete state.data;
-	state.components.form = new Form(state.categories);
-	state.components.risicoFactor = new RisicoFactor(state.result);
-	state.components.opletPuntjes = new OpletPuntjes();
-	state.components.zwaarstePuntjes = new ZwaarstePuntjes();
-	state.components.searchBar = new SearchBar();
-
-	emitter.on("DOMContentLoaded", () => {
-		//Add select eventlisteners
-		document.querySelectorAll("select").forEach(select => {
-			select.addEventListener("change", event => {
-				//Keep track of amount of filled fields
-				trackFieldFillCount(event, state);
-				emitter.emit("saveAnswers");
-			});
-		});
-
-		//Some nice js to beautify <3
-		window.addEventListener("resize", () => {
-			//Timeout to only refresh UI once after resizing
-			clearTimeout(window.UIUpdateTimeout);
-			window.UIUpdateTimeout = setTimeout(() => {
-				fitTitlesToForm();
-			}, 500);
-		});
-		fitTitlesToForm();
-		updateULTransitionTargetHeight();
-	});
-
-	emitter.on("saveAnswers", () => {
-		state.answers = [];
-		state.categories.forEach(category => {
-			category.selects.forEach(select => {
-				state.answers.push(select.save());
-			});
-		});
-
-		state.denkHetjes = state.answers.filter(answer => {
-			return answer.value.includes("Denk het");
-		});
-
-		const filteredAnswers = state.answers.filter(answer => {
-			return !answer.value.toLowerCase().includes("onbekend");
-		});
-		state.best = getBestFrom(filteredAnswers);
-		state.worst = getWorstFrom(filteredAnswers);
-			
-		state.components.opletPuntjes.set(state.denkHetjes);
-		state.components.zwaarstePuntjes.set(state.best, state.worst);
-
-		emitter.emit("calculateRisk");
-		emitter.emit("render");
-	});
-
-	emitter.on("calculateRisk", () => {
-		const risk = state.answers
-			.reduce((total, answer) => total + answer.weight, 0);
-		const formule = Number(
-			Math.round(
-				1 / (
-					1 + Math.exp(
-						-1 * (
-							-8.57219 + risk
-						)
-					)
-				) * 100
-			)
-		);
-		state.result = formule;
-	});
-});
-
-app.route("/", (state, emit) => {
-	return html`
-		<body>
-			<main id="viewport">
-				<h1>Risicotaxatie</h1>
-				<div class="flexContainer">
-					${state.components.searchBar.render(state, emit)}
-					${state.components.form.render(state, emit)}
-				</div>
-				<div class="flexContainer">
-					${state.components.risicoFactor.render(state, emit)}
-					${state.components.opletPuntjes.render(state, emit)}
-					${state.components.zwaarstePuntjes.render(state, emit)}
-				</div>
-			</main>
-		</body>
-	`;
-});
-
-app.mount("body");
-
-function trackFieldFillCount(event, state) {
-	let ul = event.srcElement;
-	while (ul.nodeName !== "UL") {
-		ul = ul.parentElement;
-	}
-	let counter = ul.querySelector(".filledCounter");
-	const formCategory = state.categories.find(category => category._id === ul.id);
-	const filledCount = formCategory.selects.reduce((total, selectWrapper) => {
-		const select = selectWrapper.element.querySelector("select");
-		return total + !(select.value.toLowerCase().includes("onbekend"));
-	}, 0);
-	counter.innerText = filledCount + counter.innerText.slice(counter.innerText.indexOf("/"));
-	if (filledCount === formCategory.selects.length) {
-		ul.style.filter = "opacity(.25) saturate(0)";
-		ul.classList.add("closed");
-	} else {
-		ul.removeAttribute("style");
-	}
-}
-
-function updateULTransitionTargetHeight () {
-	document.querySelectorAll("form>ul").forEach(ul => {
-		const height = Array.from(ul.children)
-			.filter(element => element.nodeName !== "IMG")
-			.reduce((height, element) => height + Number(getComputedStyle(element).height.slice(0, -2)), 0);
-		const padding = Number(getComputedStyle(ul).padding.slice(0, -2));
-		const margin = Number(getComputedStyle(ul).marginBottom.slice(0, -2));
-		const errorMargin = 100;
-		ul.style.maxHeight = `${height + padding * 4 + margin * 4 + errorMargin}px`;
-	});
-}
-
-function fitTitlesToForm () {
-	const targetWidth = Number(getComputedStyle(document.querySelector("form>ul")).width.slice(0, -2) - 120);
-	document.querySelectorAll("form>ul>h2").forEach(h2 => {
-		h2.style.display = "inline-block";
-		h2.style.fontSize = "1px";
-		let h2Style = getComputedStyle(h2);
-		let width = Number(h2Style.width.slice(0, -2));
-		let fontSize = Number(h2Style.fontSize.slice(0, -2));
-		let i = 0;
-		const stepSize = .2;
-		while (width < targetWidth) {
-			h2.style.fontSize = `${fontSize + (i++ * stepSize)}px`;
-			h2Style = getComputedStyle(h2);
-			width = Number(h2Style.width.slice(0, -2));
-			fontSize = Number(h2Style.fontSize.slice(0, -2));
-		}
-		h2.style.fontSize = `${Math.min(fontSize, 24)}px`;
-		h2.style.display = "block";
-	});
-}
-
-function getWorstFrom (input) { 
-	return input.filter(item => Number(item.weight) > 0 && item.value === "Ja")
-		.concat(
-			input.filter(item => Number(item.weight) < 0 && item.value === "Nee")
-		)
-		.sort((a, b) => Math.abs(Number(a.weight)) > Math.abs(Number(b.weight)) ? 1 : -1)
-		.slice(0, 3);
-}
-
-function getBestFrom (input) {
-	return input.filter(item => Number(item.weight) <= 0 && item.value === "Ja")
-		.concat(
-			input.filter(item => Number(item.weight) >= 0 && item.value === "Nee")
-		)
-		.sort((a, b) => Math.abs(Number(a.weight)) > Math.abs(Number(b.weight)) ? 1 : -1)
-		.slice(0, 3);
-}
-},{"./components/Form":44,"./components/FormCategory":45,"./components/OpletPuntjes":46,"./components/RisicoFactor":47,"./components/SearchBar":48,"./components/Select":49,"./components/ZwaarstePuntjes":50,"./data":51,"choo":12,"choo/html":10}],2:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -681,7 +492,7 @@ var objectKeys = Object.keys || function (obj) {
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"util/":5}],3:[function(require,module,exports){
+},{"util/":4}],2:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -706,14 +517,14 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -1303,9 +1114,9 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":4,"_process":7,"inherits":3}],6:[function(require,module,exports){
+},{"./support/isBuffer":3,"_process":6,"inherits":2}],5:[function(require,module,exports){
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -1491,7 +1302,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 var assert = require('assert')
 var LRU = require('nanolru')
 
@@ -1534,16 +1345,16 @@ function newCall (Cls) {
   return new (Cls.bind.apply(Cls, arguments)) // eslint-disable-line
 }
 
-},{"assert":18,"nanolru":28}],9:[function(require,module,exports){
+},{"assert":17,"nanolru":27}],8:[function(require,module,exports){
 module.exports = require('nanocomponent')
 
-},{"nanocomponent":20}],10:[function(require,module,exports){
+},{"nanocomponent":19}],9:[function(require,module,exports){
 module.exports = require('nanohtml')
 
-},{"nanohtml":24}],11:[function(require,module,exports){
+},{"nanohtml":23}],10:[function(require,module,exports){
 module.exports = require('nanohtml/raw')
 
-},{"nanohtml/raw":26}],12:[function(require,module,exports){
+},{"nanohtml/raw":25}],11:[function(require,module,exports){
 var scrollToAnchor = require('scroll-to-anchor')
 var documentReady = require('document-ready')
 var nanotiming = require('nanotiming')
@@ -1816,7 +1627,7 @@ Choo.prototype._setCache = function (state) {
   }
 }
 
-},{"./component/cache":8,"assert":18,"document-ready":13,"nanobus":19,"nanohref":21,"nanomorph":29,"nanoquery":32,"nanoraf":33,"nanorouter":34,"nanotiming":36,"scroll-to-anchor":39,"xtend":42}],13:[function(require,module,exports){
+},{"./component/cache":7,"assert":17,"document-ready":12,"nanobus":18,"nanohref":20,"nanomorph":28,"nanoquery":31,"nanoraf":32,"nanorouter":33,"nanotiming":35,"scroll-to-anchor":38,"xtend":41}],12:[function(require,module,exports){
 'use strict'
 
 var assert = require('assert')
@@ -1835,7 +1646,7 @@ function ready (callback) {
   })
 }
 
-},{"assert":2}],14:[function(require,module,exports){
+},{"assert":1}],13:[function(require,module,exports){
 (function (global){
 var topLevel = typeof global !== 'undefined' ? global :
     typeof window !== 'undefined' ? window : {}
@@ -1856,7 +1667,7 @@ if (typeof document !== 'undefined') {
 module.exports = doccy;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"min-document":6}],15:[function(require,module,exports){
+},{"min-document":5}],14:[function(require,module,exports){
 (function (global){
 var win;
 
@@ -1873,7 +1684,7 @@ if (typeof window !== "undefined") {
 module.exports = win;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],16:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 module.exports = attributeToProperty
 
 var transform = {
@@ -1894,7 +1705,7 @@ function attributeToProperty (h) {
   }
 }
 
-},{}],17:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 var attrToProp = require('hyperscript-attribute-to-property')
 
 var VAR = 0, TEXT = 1, OPEN = 2, CLOSE = 3, ATTR = 4
@@ -2190,7 +2001,7 @@ var closeRE = RegExp('^(' + [
 ].join('|') + ')(?:[\.#][a-zA-Z0-9\u007F-\uFFFF_:-]+)*$')
 function selfClosing (tag) { return closeRE.test(tag) }
 
-},{"hyperscript-attribute-to-property":16}],18:[function(require,module,exports){
+},{"hyperscript-attribute-to-property":15}],17:[function(require,module,exports){
 assert.notEqual = notEqual
 assert.notOk = notOk
 assert.equal = equal
@@ -2214,7 +2025,7 @@ function assert (t, m) {
   if (!t) throw new Error(m || 'AssertionError')
 }
 
-},{}],19:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 var splice = require('remove-array-items')
 var nanotiming = require('nanotiming')
 var assert = require('assert')
@@ -2378,7 +2189,7 @@ Nanobus.prototype._emit = function (arr, eventName, data, uuid) {
   }
 }
 
-},{"assert":18,"nanotiming":36,"remove-array-items":38}],20:[function(require,module,exports){
+},{"assert":17,"nanotiming":35,"remove-array-items":37}],19:[function(require,module,exports){
 var document = require('global/document')
 var nanotiming = require('nanotiming')
 var morph = require('nanomorph')
@@ -2534,7 +2345,7 @@ Nanocomponent.prototype.update = function () {
   throw new Error('nanocomponent: update should be implemented!')
 }
 
-},{"assert":18,"global/document":14,"nanomorph":29,"nanotiming":36,"on-load":37}],21:[function(require,module,exports){
+},{"assert":17,"global/document":13,"nanomorph":28,"nanotiming":35,"on-load":36}],20:[function(require,module,exports){
 var assert = require('assert')
 
 var safeExternalLink = /(noopener|noreferrer) (noopener|noreferrer)/
@@ -2579,7 +2390,7 @@ function href (cb, root) {
   })
 }
 
-},{"assert":18}],22:[function(require,module,exports){
+},{"assert":17}],21:[function(require,module,exports){
 var trailingNewlineRegex = /\n[\s]+$/
 var leadingNewlineRegex = /^\n[\s]+/
 var trailingSpaceRegex = /[\s]+$/
@@ -2712,7 +2523,7 @@ module.exports = function appendChild (el, childs) {
   }
 }
 
-},{}],23:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 module.exports = [
   'async', 'autofocus', 'autoplay', 'checked', 'controls', 'default',
   'defaultchecked', 'defer', 'disabled', 'formnovalidate', 'hidden',
@@ -2720,7 +2531,7 @@ module.exports = [
   'readonly', 'required', 'reversed', 'selected'
 ]
 
-},{}],24:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 var hyperx = require('hyperx')
 var appendChild = require('./append-child')
 var SVG_TAGS = require('./svg-tags')
@@ -2803,12 +2614,12 @@ module.exports = hyperx(nanoHtmlCreateElement, {comments: true})
 module.exports.default = module.exports
 module.exports.createElement = nanoHtmlCreateElement
 
-},{"./append-child":22,"./bool-props":23,"./direct-props":25,"./svg-tags":27,"hyperx":17}],25:[function(require,module,exports){
+},{"./append-child":21,"./bool-props":22,"./direct-props":24,"./svg-tags":26,"hyperx":16}],24:[function(require,module,exports){
 module.exports = [
   'indeterminate'
 ]
 
-},{}],26:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 function nanohtmlRawBrowser (tag) {
   var el = document.createElement('div')
   el.innerHTML = tag
@@ -2821,7 +2632,7 @@ function toArray (arr) {
 
 module.exports = nanohtmlRawBrowser
 
-},{}],27:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 module.exports = [
   'svg', 'altGlyph', 'altGlyphDef', 'altGlyphItem', 'animate', 'animateColor',
   'animateMotion', 'animateTransform', 'circle', 'clipPath', 'color-profile',
@@ -2839,7 +2650,7 @@ module.exports = [
   'tspan', 'use', 'view', 'vkern'
 ]
 
-},{}],28:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 module.exports = LRU
 
 function LRU (opts) {
@@ -2977,7 +2788,7 @@ LRU.prototype.evict = function () {
   this.remove(this.tail)
 }
 
-},{}],29:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 var assert = require('assert')
 var morph = require('./lib/morph')
 
@@ -3128,7 +2939,7 @@ function same (a, b) {
   return false
 }
 
-},{"./lib/morph":31,"assert":18}],30:[function(require,module,exports){
+},{"./lib/morph":30,"assert":17}],29:[function(require,module,exports){
 module.exports = [
   // attribute events (can be set with attributes)
   'onclick',
@@ -3172,7 +2983,7 @@ module.exports = [
   'onfocusout'
 ]
 
-},{}],31:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 var events = require('./events')
 var eventsLength = events.length
 
@@ -3338,7 +3149,7 @@ function updateAttribute (newNode, oldNode, name) {
   }
 }
 
-},{"./events":30}],32:[function(require,module,exports){
+},{"./events":29}],31:[function(require,module,exports){
 var reg = /([^?=&]+)(=([^&]*))?/g
 var assert = require('assert')
 
@@ -3355,7 +3166,7 @@ function qs (url) {
   return obj
 }
 
-},{"assert":18}],33:[function(require,module,exports){
+},{"assert":17}],32:[function(require,module,exports){
 'use strict'
 
 var assert = require('assert')
@@ -3392,7 +3203,7 @@ function nanoraf (render, raf) {
   }
 }
 
-},{"assert":18}],34:[function(require,module,exports){
+},{"assert":17}],33:[function(require,module,exports){
 var assert = require('assert')
 var wayfarer = require('wayfarer')
 
@@ -3448,7 +3259,7 @@ function pathname (routename, isElectron) {
   return decodeURI(routename.replace(suffix, '').replace(normalize, '/'))
 }
 
-},{"assert":18,"wayfarer":40}],35:[function(require,module,exports){
+},{"assert":17,"wayfarer":39}],34:[function(require,module,exports){
 var assert = require('assert')
 
 var hasWindow = typeof window !== 'undefined'
@@ -3505,7 +3316,7 @@ NanoScheduler.prototype.setTimeout = function (cb) {
 
 module.exports = createScheduler
 
-},{"assert":18}],36:[function(require,module,exports){
+},{"assert":17}],35:[function(require,module,exports){
 var scheduler = require('nanoscheduler')()
 var assert = require('assert')
 
@@ -3555,7 +3366,7 @@ function noop (cb) {
   }
 }
 
-},{"assert":18,"nanoscheduler":35}],37:[function(require,module,exports){
+},{"assert":17,"nanoscheduler":34}],36:[function(require,module,exports){
 /* global MutationObserver */
 var document = require('global/document')
 var window = require('global/window')
@@ -3659,7 +3470,7 @@ function eachMutation (nodes, fn) {
   }
 }
 
-},{"assert":18,"global/document":14,"global/window":15}],38:[function(require,module,exports){
+},{"assert":17,"global/document":13,"global/window":14}],37:[function(require,module,exports){
 'use strict'
 
 /**
@@ -3689,7 +3500,7 @@ module.exports = function removeItems(arr, startIdx, removeCount)
   arr.length = len
 }
 
-},{}],39:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 module.exports = scrollToAnchor
 
 function scrollToAnchor (anchor, options) {
@@ -3701,7 +3512,7 @@ function scrollToAnchor (anchor, options) {
   }
 }
 
-},{}],40:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 var assert = require('assert')
 var trie = require('./trie')
 
@@ -3780,7 +3591,7 @@ function Wayfarer (dft) {
   }
 }
 
-},{"./trie":41,"assert":2}],41:[function(require,module,exports){
+},{"./trie":40,"assert":1}],40:[function(require,module,exports){
 var mutate = require('xtend/mutable')
 var assert = require('assert')
 var xtend = require('xtend')
@@ -3918,7 +3729,7 @@ Trie.prototype.mount = function (route, trie) {
   }
 }
 
-},{"assert":2,"xtend":42,"xtend/mutable":43}],42:[function(require,module,exports){
+},{"assert":1,"xtend":41,"xtend/mutable":42}],41:[function(require,module,exports){
 module.exports = extend
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -3939,7 +3750,7 @@ function extend() {
     return target
 }
 
-},{}],43:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 module.exports = extend
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -3958,7 +3769,7 @@ function extend(target) {
     return target
 }
 
-},{}],44:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 const ChooComponent = require("choo/component");
 const html = require("choo/html");
 
@@ -3980,7 +3791,7 @@ module.exports = class Form extends ChooComponent {
 		return false;
 	}
 }
-},{"choo/component":9,"choo/html":10}],45:[function(require,module,exports){
+},{"choo/component":8,"choo/html":9}],44:[function(require,module,exports){
 const ChooComponent = require("choo/component");
 const html = require("choo/html");
 
@@ -4008,7 +3819,7 @@ module.exports = class FormCategory extends ChooComponent {
 		return false;
 	}
 }
-},{"choo/component":9,"choo/html":10}],46:[function(require,module,exports){
+},{"choo/component":8,"choo/html":9}],45:[function(require,module,exports){
 const ChooComponent = require("choo/component");
 const html = require("choo/html");
 
@@ -4038,7 +3849,7 @@ module.exports = class OpletPuntjes extends ChooComponent {
 		return true;
 	}
 }
-},{"choo/component":9,"choo/html":10}],47:[function(require,module,exports){
+},{"choo/component":8,"choo/html":9}],46:[function(require,module,exports){
 const ChooComponent = require("choo/component");
 const html = require("choo/html");
 
@@ -4089,7 +3900,7 @@ module.exports = class RisicoFactor extends ChooComponent {
 		this.updateFactor(this);
 	}
 }
-},{"choo/component":9,"choo/html":10}],48:[function(require,module,exports){
+},{"choo/component":8,"choo/html":9}],47:[function(require,module,exports){
 const ChooComponent = require("choo/component");
 const html = require("choo/html");
 
@@ -4134,7 +3945,7 @@ module.exports = class SearchBar extends ChooComponent {
 		return false;
 	}
 }
-},{"choo/component":9,"choo/html":10}],49:[function(require,module,exports){
+},{"choo/component":8,"choo/html":9}],48:[function(require,module,exports){
 const ChooComponent = require("choo/component");
 const html = require("choo/html");
 const raw = require("choo/html/raw");
@@ -4167,6 +3978,10 @@ module.exports = class Select extends ChooComponent {
 		this.element.querySelector("select").value = value;
 	}
 
+	generateSelectIDForSaving (state) {
+		return `select${state.selectIDCount++}`;
+	}
+
 	renderOption (item) {
 		if (typeof item === "object") {
 			return html`<option value="${item.label}" data-weight="${item.weight}">${item.label}</option>`;
@@ -4183,7 +3998,7 @@ module.exports = class Select extends ChooComponent {
 		return html`
 			<div class="selectWrapper">
 				<h3>${this.label}</h3>
-				<select>
+				<select id="${this.generateSelectIDForSaving(state)}">
 					${this.items.map(item => this.renderOption(item))}
 				</select>
 			</div>
@@ -4194,7 +4009,7 @@ module.exports = class Select extends ChooComponent {
 		return false;
 	}
 }
-},{"choo/component":9,"choo/html":10,"choo/html/raw":11}],50:[function(require,module,exports){
+},{"choo/component":8,"choo/html":9,"choo/html/raw":10}],49:[function(require,module,exports){
 const ChooComponent = require("choo/component");
 const html = require("choo/html");
 
@@ -4227,7 +4042,7 @@ module.exports = class ZwaarstePuntjes extends ChooComponent {
 		return true;
 	}
 }
-},{"choo/component":9,"choo/html":10}],51:[function(require,module,exports){
+},{"choo/component":8,"choo/html":9}],50:[function(require,module,exports){
 module.exports = {
   "Intercept": [
     {label: "Intercept", weight: -7.36863}
@@ -4340,4 +4155,230 @@ module.exports = {
     ]}
   ]
 };
-},{}]},{},[1]);
+},{}],51:[function(require,module,exports){
+const choo = require("choo");
+const html = require("choo/html");
+const RisicoFactor = require("./components/RisicoFactor");
+const OpletPuntjes = require("./components/OpletPuntjes");
+const ZwaarstePuntjes = require("./components/ZwaarstePuntjes");
+const Form = require("./components/Form");
+const FormCategory = require("./components/FormCategory");
+const Select = require("./components/Select");
+const SearchBar = require("./components/SearchBar");
+
+const app = choo(); //Choo choo boiis, the pain train is leaving!
+
+app.use((state, emitter) => {
+	state.result = 0;
+	state.selectIDCount = 0;
+	state.data = require("./data");
+	state.categories = [];
+	for (const category in state.data) {
+		if (category === "Intercept") continue;
+		const factors = state.data[category];
+		const selects = factors.map(factor => {
+			if (factor.items) return new Select(factor);
+			return new Select(factor.label, factor.weight);
+		});
+		state.categories.push(new FormCategory(category, selects));
+	}
+	delete state.data;
+	state.components.form = new Form(state.categories);
+	state.components.risicoFactor = new RisicoFactor(state.result);
+	state.components.opletPuntjes = new OpletPuntjes();
+	state.components.zwaarstePuntjes = new ZwaarstePuntjes();
+	state.components.searchBar = new SearchBar();
+
+	emitter.on("DOMContentLoaded", () => {
+		//Add select eventlisteners
+		document.querySelectorAll("select").forEach(select => {
+			select.addEventListener("change", event => {
+				//Keep track of amount of filled fields
+				trackFieldFillCount(event, state);
+				emitter.emit("saveAnswers");
+			});
+
+			loadState();
+			trackFieldFillCount(null, state);
+			emitter.emit("saveAnswers");
+		});
+
+		//Some nice js to beautify <3
+		window.addEventListener("resize", () => {
+			//Timeout to only refresh UI once after resizing
+			clearTimeout(window.UIUpdateTimeout);
+			window.UIUpdateTimeout = setTimeout(() => {
+				fitTitlesToForm();
+			}, 500);
+		});
+		fitTitlesToForm();
+		updateULTransitionTargetHeight();
+
+	});
+
+	emitter.on("saveAnswers", () => {
+		state.answers = [];
+		state.categories.forEach(category => {
+			category.selects.forEach(select => {
+				state.answers.push(select.save());
+			});
+		});
+
+		state.denkHetjes = state.answers.filter(answer => {
+			return answer.value.includes("Denk het");
+		});
+
+		const filteredAnswers = state.answers.filter(answer => {
+			return !answer.value.toLowerCase().includes("onbekend");
+		});
+		state.best = getBestFrom(filteredAnswers);
+		state.worst = getWorstFrom(filteredAnswers);
+			
+		state.components.opletPuntjes.set(state.denkHetjes);
+		state.components.zwaarstePuntjes.set(state.best, state.worst);
+
+		emitter.emit("calculateRisk");
+		emitter.emit("render");
+	});
+
+	emitter.on("calculateRisk", () => {
+		const risk = state.answers
+			.reduce((total, answer) => total + answer.weight, 0);
+		const formule = Number(
+			Math.round(
+				1 / (
+					1 + Math.exp(
+						-1 * (
+							-8.57219 + risk
+						)
+					)
+				) * 100
+			)
+		);
+		state.result = formule;
+	});
+
+	emitter.on("*", () => saveState());
+	window.addEventListener("beforeunload", () => saveState());
+});
+
+app.route("/", (state, emit) => {
+	return html`
+		<body>
+			<main id="viewport">
+				<h1>Risicotaxatie</h1>
+				<div class="flexContainer">
+					${state.components.searchBar.render(state, emit)}
+					${state.components.form.render(state, emit)}
+				</div>
+				<div class="flexContainer">
+					${state.components.risicoFactor.render(state, emit)}
+					${state.components.opletPuntjes.render(state, emit)}
+					${state.components.zwaarstePuntjes.render(state, emit)}
+				</div>
+			</main>
+		</body>
+	`;
+});
+
+app.mount("body");
+
+function trackFieldFillCount(event, state) {
+	function updateFilledFieldCount(ul) {
+		let counter = ul.querySelector(".filledCounter");
+		const formCategory = state.categories.find(category => category._id === ul.id);
+		const filledCount = formCategory.selects.reduce((total, selectWrapper) => {
+			const select = selectWrapper.element.querySelector("select");
+			return total + !(select.value.toLowerCase().includes("onbekend"));
+		}, 0);
+		counter.innerText = filledCount + counter.innerText.slice(counter.innerText.indexOf("/"));
+		if (filledCount === formCategory.selects.length) {
+			ul.style.filter = "opacity(.25) saturate(0)";
+			ul.classList.add("closed");
+		}
+		else {
+			ul.removeAttribute("style");
+		}
+	}
+
+	if (event) {
+		let ul = event.srcElement;
+		while (ul.nodeName !== "UL") {
+			ul = ul.parentElement;
+		}
+		updateFilledFieldCount(ul);
+	} else {
+		document.querySelectorAll(".formCategory").forEach(formCategory => {
+			updateFilledFieldCount(formCategory);
+		});
+	}
+}
+
+function updateULTransitionTargetHeight () {
+	document.querySelectorAll("form>ul").forEach(ul => {
+		const height = Array.from(ul.children)
+			.filter(element => element.nodeName !== "IMG")
+			.reduce((height, element) => height + Number(getComputedStyle(element).height.slice(0, -2)), 0);
+		const padding = Number(getComputedStyle(ul).padding.slice(0, -2));
+		const margin = Number(getComputedStyle(ul).marginBottom.slice(0, -2));
+		const errorMargin = 100;
+		ul.style.maxHeight = `${height + padding * 4 + margin * 4 + errorMargin}px`;
+	});
+}
+
+function fitTitlesToForm () {
+	const targetWidth = Number(getComputedStyle(document.querySelector("form>ul")).width.slice(0, -2) - 120);
+	document.querySelectorAll("form>ul>h2").forEach(h2 => {
+		h2.style.display = "inline-block";
+		h2.style.fontSize = "1px";
+		let h2Style = getComputedStyle(h2);
+		let width = Number(h2Style.width.slice(0, -2));
+		let fontSize = Number(h2Style.fontSize.slice(0, -2));
+		let i = 0;
+		const stepSize = .2;
+		while (width < targetWidth) {
+			h2.style.fontSize = `${fontSize + (i++ * stepSize)}px`;
+			h2Style = getComputedStyle(h2);
+			width = Number(h2Style.width.slice(0, -2));
+			fontSize = Number(h2Style.fontSize.slice(0, -2));
+		}
+		h2.style.fontSize = `${Math.min(fontSize, 24)}px`;
+		h2.style.display = "block";
+	});
+}
+
+function getWorstFrom (input) { 
+	return input.filter(item => Number(item.weight) > 0 && item.value === "Ja")
+		.concat(
+			input.filter(item => Number(item.weight) < 0 && item.value === "Nee")
+		)
+		.sort((a, b) => Math.abs(Number(a.weight)) > Math.abs(Number(b.weight)) ? 1 : -1)
+		.slice(0, 3);
+}
+
+function getBestFrom (input) {
+	return input.filter(item => Number(item.weight) <= 0 && item.value === "Ja")
+		.concat(
+			input.filter(item => Number(item.weight) >= 0 && item.value === "Nee")
+		)
+		.sort((a, b) => Math.abs(Number(a.weight)) > Math.abs(Number(b.weight)) ? 1 : -1)
+		.slice(0, 3);
+}
+
+function saveState () {
+	const selects = [];
+	document.querySelectorAll("select").forEach(select => {
+		selects.push({id: select.id, index: select.selectedIndex});
+	});
+	localStorage.setItem("selects", JSON.stringify(selects));
+}
+
+function loadState () {
+	const selects = JSON.parse(localStorage.getItem("selects"));
+	if (!selects) return;
+	selects.forEach(select => {
+		const selectElement = document.querySelector(`#${select.id}`);
+		selectElement.selectedIndex = select.index;
+	});
+}
+},{"./components/Form":43,"./components/FormCategory":44,"./components/OpletPuntjes":45,"./components/RisicoFactor":46,"./components/SearchBar":47,"./components/Select":48,"./components/ZwaarstePuntjes":49,"./data":50,"choo":11,"choo/html":9}]},{},[51]);
